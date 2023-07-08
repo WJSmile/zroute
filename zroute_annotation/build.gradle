@@ -1,0 +1,17 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'kotlin-kapt'
+}
+dependencies {
+    implementation 'com.google.auto.service:auto-service:1.1.1'
+    kapt 'com.google.auto.service:auto-service:1.1.1'
+    implementation 'com.squareup:kotlinpoet:1.14.2'
+    implementation "com.squareup:kotlinpoet-metadata:1.14.2"
+    implementation "com.squareup:kotlinpoet-metadata-specs:1.9.0"
+    implementation project(':zroute-processor')
+}
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}

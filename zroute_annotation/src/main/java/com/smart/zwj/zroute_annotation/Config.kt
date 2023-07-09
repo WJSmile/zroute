@@ -8,4 +8,5 @@ object Config {
     const val FUN_NAME = "setNavPath"
     const val NAV_HOST_CONTROLLER ="navHostController"
     const val NAV_GRAPH_BUILDER  ="navGraphBuilder"
+    const val NAV_BACK_STACK_ENTRY = "navBackStackEntry"
 }

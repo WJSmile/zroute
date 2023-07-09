@@ -1,12 +1,15 @@
 package com.smart.zwj.zroute_annotation.utils
 
+import com.smart.zwj.zroute_annotation.bean.FunctionsData
 import com.smart.zwj.zroute_annotation.bean.ParameterBean
 import com.smart.zwj.zroute_annotation.bean.ProcessorInformationBean
+import com.squareup.kotlinpoet.DelicateKotlinPoetApi
+import com.squareup.kotlinpoet.asTypeName
 import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
+import com.squareup.kotlinpoet.metadata.declaresDefaultValue
+import com.squareup.kotlinpoet.metadata.isNullable
 import com.squareup.kotlinpoet.metadata.toKmClass
 import com.squareup.kotlinpoet.metadata.toKotlinClassMetadata
-import com.zwj.zroute_annotation.Parameter
-import kotlinx.metadata.KmClassifier
 import kotlinx.metadata.KmFunction
 import kotlinx.metadata.jvm.KotlinClassMetadata
 import javax.annotation.processing.ProcessingEnvironment
@@ -16,53 +19,54 @@ import javax.lang.model.element.TypeElement
 
 object Utils {
 
-    @OptIn(KotlinPoetMetadataPreview::class)
+    val functionsMap:MutableMap<String, FunctionsData> = hashMapOf()
+    @OptIn(DelicateKotlinPoetApi::class, KotlinPoetMetadataPreview::class)
     fun getProcessorInformation(
-        key: Int,
         element: Element,
         processingEnv: ProcessingEnvironment
     ): ProcessorInformationBean {
         val packageName =
             processingEnv.elementUtils.getPackageOf(element.enclosingElement).qualifiedName.toString()
-        val fileName = (element.enclosingElement as TypeElement).qualifiedName.toString()
 
         val parameterList: MutableList<ParameterBean> = mutableListOf()
-        var functions: MutableList<KmFunction>
-        var className: String
+        val fileName = (element.enclosingElement as TypeElement).qualifiedName.toString()
+        val funName = element.simpleName.toString()
 
-        try {
-            functions = element.enclosingElement.getAnnotation(Metadata::class.java)
-                .toKmClass().functions
-            className = fileName.split(".").last()
-        } catch (e: Exception) {
-            functions = element.enclosingElement.getAnnotation(Metadata::class.java)
-                .toKotlinClassMetadata<KotlinClassMetadata.FileFacade>()
-                .toKmPackage().functions
-            className = ""
-        }
+        var functionsData:FunctionsData ?=null
 
-        (element as ExecutableElement).parameters.forEachIndexed { index, variableElement ->
-            functions[key].valueParameters[index].apply {
-                if (variableElement.getAnnotation(Parameter::class.java) != null) {
-                    parameterList.add(
-                        ParameterBean(
-                            name,
-                            variableElement.getAnnotation(Parameter::class.java).key,
-                            (type.classifier as KmClassifier.Class).name
-                        )
-                    )
-                } else {
-                    parameterList.add(
-                        ParameterBean(
-                            name,
-                            "",
-                            (type.classifier as KmClassifier.Class).name
-                        )
-                    )
-                }
+        if (functionsMap.keys.contains(fileName)){
+            functionsData = functionsMap[fileName]
+        }else{
+             try {
+                functionsMap[fileName] = FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
+                    .toKmClass().functions,0,element.enclosingElement.simpleName.toString())
+
+            } catch (e: Exception) {
+                functionsMap[fileName] = FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
+                    .toKotlinClassMetadata<KotlinClassMetadata.FileFacade>()
+                    .toKmPackage().functions,0,"")
+                ""
             }
         }
 
-        return ProcessorInformationBean(packageName, className, parameterList)
+
+        (element as ExecutableElement).parameters.forEachIndexed { index, variableElement ->
+
+            parameterList.add(
+                ParameterBean(
+                    variableElement.toString(),
+                    variableElement.asType().asTypeName().toString(),
+                    functionsData?.num?.let { functionsData.functions[it].valueParameters[index].declaresDefaultValue }
+                        ?:false,
+                    functionsData?.num?.let { functionsData.functions[it].valueParameters[index].type.isNullable }
+                        ?:false,
+                )
+            )
+            functionsData?.apply {
+                num++
+            }
+        }
+
+        return ProcessorInformationBean(packageName, functionsData?.className?:"",funName, parameterList)
     }
 }

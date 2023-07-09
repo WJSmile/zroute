@@ -32,7 +32,6 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
-    ZRoutePage().OnePage(hello = 4)
 }
 
 @Preview(showBackground = true)

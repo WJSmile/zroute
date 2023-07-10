@@ -10,7 +10,6 @@ import com.squareup.kotlinpoet.metadata.declaresDefaultValue
 import com.squareup.kotlinpoet.metadata.isNullable
 import com.squareup.kotlinpoet.metadata.toKmClass
 import com.squareup.kotlinpoet.metadata.toKotlinClassMetadata
-import kotlinx.metadata.KmFunction
 import kotlinx.metadata.jvm.KotlinClassMetadata
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.Element
@@ -32,23 +31,23 @@ object Utils {
         val fileName = (element.enclosingElement as TypeElement).qualifiedName.toString()
         val funName = element.simpleName.toString()
 
-        var functionsData:FunctionsData ?=null
+        var functionsData:FunctionsData ?
 
         if (functionsMap.keys.contains(fileName)){
             functionsData = functionsMap[fileName]
         }else{
              try {
-                functionsMap[fileName] = FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
-                    .toKmClass().functions,0,element.enclosingElement.simpleName.toString())
+                 functionsData = FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
+                     .toKmClass().functions,0,element.enclosingElement.simpleName.toString())
+                functionsMap[fileName] = functionsData
 
             } catch (e: Exception) {
-                functionsMap[fileName] = FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
-                    .toKotlinClassMetadata<KotlinClassMetadata.FileFacade>()
-                    .toKmPackage().functions,0,"")
-                ""
+                 functionsData =FunctionsData(element.enclosingElement.getAnnotation(Metadata::class.java)
+                     .toKotlinClassMetadata<KotlinClassMetadata.FileFacade>()
+                     .toKmPackage().functions,0,"")
+                functionsMap[fileName] = functionsData
             }
         }
-
 
         (element as ExecutableElement).parameters.forEachIndexed { index, variableElement ->
 

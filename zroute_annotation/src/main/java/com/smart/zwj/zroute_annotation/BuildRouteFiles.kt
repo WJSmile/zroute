@@ -37,7 +37,7 @@ class BuildRouteFiles {
                 ClassName("androidx.navigation", "NavGraphBuilder")
             )
         Utils.functionsMap.clear()
-        roundEnv?.getElementsAnnotatedWith(Route::class.java)?.forEachIndexed { index, element ->
+        roundEnv?.getElementsAnnotatedWith(Route::class.java)?.forEachIndexed { _, element ->
 
             val processorInformationBean =
                 Utils.getProcessorInformation(element, processingEnv)
@@ -73,7 +73,6 @@ class BuildRouteFiles {
                 "${Config.NAV_BACK_STACK_ENTRY}.arguments?.apply {\n%T().${processorInformationBean.funName}("
             }
             processorInformationBean.parameterList.forEach {
-                System.err.println(it.type)
                 when(it.type){
                     String::class.asTypeName().toString(),
                     java.lang.String::class.java.name.toString()->{

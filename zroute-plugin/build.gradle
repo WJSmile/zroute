@@ -1,0 +1,34 @@
+plugins {
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm'
+    id 'groovy'
+    id 'maven-publish'
+}
+
+dependencies {
+    implementation gradleApi()
+    implementation 'com.android.tools.build:gradle:8.0.2'
+    implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
+    implementation 'com.google.code.gson:gson:2.8.9'
+    implementation 'org.javassist:javassist:3.20.0-GA'
+
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = "com.zwj.zroute.plugin"
+            artifactId = 'ZRoutePlugin'
+            version = '1.0.0'
+            from components.java
+        }
+    }
+    repositories {
+        maven { url uri('./repos') }
+    }
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}

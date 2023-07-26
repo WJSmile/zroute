@@ -10,7 +10,10 @@ import com.squareup.kotlinpoet.metadata.declaresDefaultValue
 import com.squareup.kotlinpoet.metadata.isNullable
 import com.squareup.kotlinpoet.metadata.toKmClass
 import com.squareup.kotlinpoet.metadata.toKotlinClassMetadata
+import kotlinx.metadata.KmType
+import kotlinx.metadata.KmValueParameter
 import kotlinx.metadata.jvm.KotlinClassMetadata
+import javax.annotation.Nullable
 import javax.annotation.processing.ProcessingEnvironment
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -50,15 +53,12 @@ object Utils {
         }
 
         (element as ExecutableElement).parameters.forEachIndexed { index, variableElement ->
-
             parameterList.add(
                 ParameterBean(
                     variableElement.toString(),
                     variableElement.asType().asTypeName().toString(),
-                    functionsData?.num?.let { functionsData.functions[it].valueParameters[index].declaresDefaultValue }
-                        ?:false,
-                    functionsData?.num?.let { functionsData.functions[it].valueParameters[index].type.isNullable }
-                        ?:false,
+                    getDeclaresDefaultValue(functionsData,index),
+                    isNullable(functionsData,index),
                 )
             )
             functionsData?.apply {
@@ -67,5 +67,27 @@ object Utils {
         }
 
         return ProcessorInformationBean(packageName, functionsData?.className?:"",funName, parameterList)
+    }
+
+    @OptIn(KotlinPoetMetadataPreview::class)
+    fun getDeclaresDefaultValue(functionsData:FunctionsData?, index:Int):Boolean{
+        if (functionsData?.num == null){
+            return false
+        }
+        if (functionsData.functions[functionsData.num].valueParameters.isEmpty()){
+            return false
+        }
+        return functionsData.functions[functionsData.num].valueParameters[index].declaresDefaultValue
+    }
+
+    @OptIn(KotlinPoetMetadataPreview::class)
+    fun isNullable(functionsData:FunctionsData?, index:Int):Boolean{
+        if (functionsData?.num == null){
+            return false
+        }
+        if (functionsData.functions[functionsData.num].valueParameters.isEmpty()){
+            return false
+        }
+        return functionsData.functions[functionsData.num].valueParameters[index].type.isNullable
     }
 }

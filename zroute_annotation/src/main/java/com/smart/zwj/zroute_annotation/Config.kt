@@ -9,4 +9,6 @@ object Config {
     const val NAV_HOST_CONTROLLER ="navHostController"
     const val NAV_GRAPH_BUILDER  ="navGraphBuilder"
     const val NAV_BACK_STACK_ENTRY = "navBackStackEntry"
+
+    const val META_PATH ="META-INF/zrouter/library_meta.json"
 }

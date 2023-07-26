@@ -3,6 +3,9 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven{
+            url './zroute-plugin/repos'
+        }
     }
 }
 dependencyResolutionManagement {
@@ -11,9 +14,12 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
 }
+
 rootProject.name = "zroute"
 include ':app'
 include ':zroute-processor'
 include ':zroute_annotation'
 include ':zroute'
+include ':zroute-plugin'

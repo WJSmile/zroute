@@ -8,17 +8,13 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.core.view.WindowCompat
-import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.smart.zwj.zroute.pages.ZRoutePage
-
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        androidx.navigation.NavDestination
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             MainNavigation()

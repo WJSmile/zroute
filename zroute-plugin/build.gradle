@@ -10,7 +10,7 @@ dependencies {
     implementation 'com.android.tools.build:gradle:8.0.2'
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
     implementation 'com.google.code.gson:gson:2.8.9'
-    implementation 'org.javassist:javassist:3.20.0-GA'
+    implementation 'org.javassist:javassist:3.29.2-GA'
 
 }
 

@@ -34,11 +34,6 @@ class ZRoutePageKt {
         }
 
     }
-
-
-
-
-
 }
 
 @Route(path = "main/tow?hello={hello}")

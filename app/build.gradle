@@ -1,7 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-kapt'
+    id("com.google.devtools.ksp")
     id 'zrouteplugin'
 }
 
@@ -20,10 +20,8 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-        kapt{
-            arguments{
-                arg("module_name", project.getName())
-            }
+        ksp{
+            arg("module_name", project.getName())
         }
     }
 
@@ -71,5 +69,5 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation project(":zroute")
-    kapt  project(":zroute_annotation")
+    ksp  project(":zroute_annotation")
 }

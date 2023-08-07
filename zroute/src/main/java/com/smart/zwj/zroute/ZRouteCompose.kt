@@ -4,9 +4,12 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 
-object BuiltInModules {
+class ZRouteCompose {
+
     @ExperimentalAnimationApi
-    fun modules(navHostController: NavHostController, navGraphBuilder: NavGraphBuilder) {
+    fun initRoute(navHostController: NavHostController, navGraphBuilder: NavGraphBuilder){
 
     }
+
 }
+

@@ -11,6 +11,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20"
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.javassist:javassist:3.29.2-GA'
+    implementation "com.squareup:kotlinpoet-metadata:1.14.2"
+    implementation "com.squareup:kotlinpoet-metadata-specs:1.9.0"
 
 }
 

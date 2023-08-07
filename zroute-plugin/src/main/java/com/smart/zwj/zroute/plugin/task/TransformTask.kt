@@ -70,6 +70,7 @@ abstract class TransformTask : DefaultTask() {
                         Gson().fromJson(it, object : TypeToken<ZRouteItem>() {}.type)
                     routeList.add(zipFileBean)
                 }
+                metaFile.delete()
             }
         }
 
@@ -84,12 +85,15 @@ abstract class TransformTask : DefaultTask() {
                     ) {
                        transformCode.insertion(routeList, jarOutput, jarEntry)
                     } else {
-                        kotlin.runCatching {
-                            jarOutput.putNextEntry(JarEntry(jarEntry.name))
-                            jarFile.getInputStream(jarEntry).use {
-                                it.copyTo(jarOutput)
+                        if (!jarEntry.name.endsWith(Config.META_PATH)){
+                            kotlin.runCatching {
+                                jarOutput.putNextEntry(JarEntry(jarEntry.name))
+                                jarFile.getInputStream(jarEntry).use {
+                                    it.copyTo(jarOutput)
+                                }
                             }
                         }
+
                     }
 
                     jarOutput.closeEntry()
@@ -99,7 +103,7 @@ abstract class TransformTask : DefaultTask() {
 
             dirs.get().forEach { directory ->
                 directory.asFile.walk().forEach { file ->
-                    if (file.isFile) {
+                    if (file.isFile&&!file.name.endsWith(Config.META_PATH)) {
                         val relativePath = directory.asFile.toURI().relativize(file.toURI()).path
                         jarOutput.putNextEntry(
                             JarEntry(

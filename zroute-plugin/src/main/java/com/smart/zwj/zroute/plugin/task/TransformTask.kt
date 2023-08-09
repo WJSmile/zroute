@@ -70,7 +70,6 @@ abstract class TransformTask : DefaultTask() {
                         Gson().fromJson(it, object : TypeToken<ZRouteItem>() {}.type)
                     routeList.add(zipFileBean)
                 }
-                metaFile.delete()
             }
         }
 

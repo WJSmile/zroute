@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace 'com.smart.zwj.zroute'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "com.smart.zwj.zroute"
@@ -69,5 +69,6 @@ dependencies {
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
     implementation project(":zroute")
+    implementation project(":video")
     ksp  project(":zroute_annotation")
 }

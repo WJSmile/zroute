@@ -11,13 +11,14 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 class ZRoutePageKt {
     @Route(path = "main/one")
     @Composable
-    fun OnePage(navHostController: NavHostController) {
+    fun OnePage(navHostController: NavHostController, viewModel: OnPageViewModel = viewModel()) {
         rememberSystemUiController().setStatusBarColor(
             color = Color.White, darkIcons = true
         )
@@ -29,10 +30,10 @@ class ZRoutePageKt {
         ) {
 
             Text("hello", color = Color.Black, fontSize = 30.sp,modifier=Modifier.clickable {
-                navHostController.navigate("main/tow?hello=dhjjhkcdkjds")
+                //navHostController.navigate("main/tow?hello=dhjjhkcdkjds")
+                viewModel.continuation()
             })
         }
-
     }
 }
 
